@@ -1,5 +1,7 @@
 const multer = require("multer");
 const EmailRegisterService = require("../services/users/EmailRegister.service");
+const AccountStatusChanger = require("../services/users/accountStatusChanger.service");
+const EmailLoginService = require("../services/users/EmailLogin.service");
 
 
 const upload = multer({
@@ -36,4 +38,46 @@ async function UserEmailRegistrationController(req, res) {
     }
 }
 
-module.exports = { upload, UserEmailRegistrationController };
+
+async function UserEmailLoginController(req, res) {
+    try {
+        const { email, password } = req.body;
+
+        const userLogin = await EmailLoginService(email, password);
+
+        return res.status(userLogin.status ? 200 : 404).json({
+            status: userLogin.status,
+            message: userLogin.message,
+            token: userLogin.status ? userLogin.token : null,
+            data: userLogin.status ? userLogin.data : null
+        })
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({
+            status: false,
+            message: error.message
+        })
+    }
+}
+
+async function AccountStatusChangerController(req, res) {
+    try {
+        const id = req.userID;
+
+        const userStatus = await AccountStatusChanger(id);
+
+        return res.status(userStatus.status ? 200 : 404).json({
+            status: userStatus.status,
+            message: userStatus.message
+        })
+
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({
+            status: false,
+            message: error.message
+        })
+    }
+}
+
+module.exports = { upload, UserEmailRegistrationController, UserEmailLoginController, AccountStatusChangerController };
