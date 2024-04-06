@@ -21,6 +21,10 @@ async function EmailRegisterService(name, email, password, image, role, status, 
             };
         }
 
+        if (role == "super-admin") {
+            isPrivate = true;
+        }
+        
         // Hash the password
         const hashPassword = await bcrypt.hash(password, 10);
 

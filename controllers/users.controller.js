@@ -2,6 +2,8 @@ const multer = require("multer");
 const EmailRegisterService = require("../services/users/EmailRegister.service");
 const AccountStatusChanger = require("../services/users/accountStatusChanger.service");
 const EmailLoginService = require("../services/users/EmailLogin.service");
+const MyProfileService = require("../services/users/myProfile.service");
+const OtherPublicUsersService = require("../services/users/otherPublicUsers.service");
 
 
 const upload = multer({
@@ -80,4 +82,47 @@ async function AccountStatusChangerController(req, res) {
     }
 }
 
-module.exports = { upload, UserEmailRegistrationController, UserEmailLoginController, AccountStatusChangerController };
+
+async function MyProfileController(req, res) {
+    try {
+        const userID = req.userID;
+
+        const user = await MyProfileService(userID);
+
+        return res.status(user.status ? 200 : 404).json({
+            status: user.status,
+            message: user.message,
+            data: user.data
+        })
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({
+            status: false,
+            message: error.message
+        })
+    }
+}
+
+
+async function OtherPublicUsersController(req, res) {
+    try {
+        const userID = req.userID;
+
+        const user = await OtherPublicUsersService(userID);
+
+        return res.status(user.status ? 200 : 404).json({
+            status: user.status,
+            message: user.message,
+            count: user.count,
+            data: user.data,
+        })
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({
+            status: false,
+            message: error.message
+        })
+    }
+}
+
+module.exports = { upload, UserEmailRegistrationController, UserEmailLoginController, AccountStatusChangerController, MyProfileController, OtherPublicUsersController };
