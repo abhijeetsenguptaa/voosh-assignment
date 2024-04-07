@@ -4,6 +4,8 @@
 
 This is the VOOSH assignment.
 
+BASIC URL : `http://13.126.52.115:9009/`
+
 ## Routes
 
 ### Users
