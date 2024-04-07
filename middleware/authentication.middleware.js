@@ -4,16 +4,15 @@ const User_Model = require('../models/users.model');
 
 async function authentication(req, res, next) {
     try {
-        const authHeader = req.headers.authorization;
+        // Retrieve the token from the cookies
+        const token = req.cookies.jwt;
 
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        if (!token) {
             return res.status(401).json({
                 status: 401,
-                message: "Please provide a valid Bearer token."
+                message: "Please LOG IN."
             });
         }
-
-        const token = authHeader.split(' ')[1];
 
         jwt.verify(token, process.env.SECRET_KEY, async (err, decode) => {
             if (decode) {
