@@ -10,6 +10,9 @@ const User_Schema = new mongoose.Schema({
     password: {
         type: String
     },
+    bio:{
+        type: String
+    },
     image: {
         type: String,
     },

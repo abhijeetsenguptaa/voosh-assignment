@@ -4,6 +4,7 @@ const AccountStatusChanger = require("../services/users/accountStatusChanger.ser
 const EmailLoginService = require("../services/users/EmailLogin.service");
 const MyProfileService = require("../services/users/myProfile.service");
 const OtherPublicUsersService = require("../services/users/otherPublicUsers.service");
+const EditUserProfileService = require("../services/users/EditUserProfile.service");
 
 
 const upload = multer({
@@ -19,13 +20,13 @@ const upload = multer({
 
 async function UserEmailRegistrationController(req, res) {
     try {
-        const { name, email, password, role, status, isPrivate } = req.body;
+        const { name, email, password, bio, role, status, isPrivate } = req.body;
 
         let image;
         if (req.file) {
             image = 'uploads/users/' + req.file.filename;
         }
-        const userRegister = await EmailRegisterService(name, email, password, image, role, status, isPrivate);
+        const userRegister = await EmailRegisterService(name, email, password, image, bio, role, status, isPrivate);
 
         return res.status(userRegister.status ? 200 : 404).json({
             status: userRegister.status,
@@ -125,4 +126,24 @@ async function OtherPublicUsersController(req, res) {
     }
 }
 
-module.exports = { upload, UserEmailRegistrationController, UserEmailLoginController, AccountStatusChangerController, MyProfileController, OtherPublicUsersController };
+async function EditUserProfileController(req, res) {
+    try {
+        const userID = req.userID;
+        const { name, email, password, bio, image } = req.body;
+
+        const user = await EditUserProfileService(userID, name, email, password, bio, image);
+
+        return res.status(user.status ? 200 : 404).json({
+            status: user.status,
+            message: user.message,
+        })
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({
+            status: false,
+            message: error.message
+        })
+    }
+}
+
+module.exports = { upload, UserEmailRegistrationController, UserEmailLoginController, AccountStatusChangerController, MyProfileController, OtherPublicUsersController, EditUserProfileController };
