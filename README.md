@@ -5,6 +5,7 @@
 This is the VOOSH assignment.
 
 BASIC URL : `http://13.126.52.115:9009/`
+EXPLANATION LINK : `https://drive.google.com/file/d/1tVpaLAWargD9rPL0kMGM7HaexEJ422_M/view?usp=sharing`
 
 ## Routes
 
