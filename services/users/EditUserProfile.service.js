@@ -53,7 +53,11 @@ async function EditUserProfileService(id, name, email, password, bio, image) {
             message: "User updated successfully!"
         }
     } catch (error) {
-        res.send(error)
+        console.error("Error in user logging in:", error.message);
+        return {
+            status: false,
+            message: "An error occurred during user editing. Please try again later."
+        };
     }
 }
 

@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path'); // Import the 'path' module
 const connection = require('./configs/connection');
 const userRouter = require('./routers/users.routes');
+const productRouter = require('./routers/products.routes');
 
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(cors());
 
 app.use('/uploads', express.static('uploads')); // Check the static images
 app.use('/api/users', userRouter);
+app.use('/api/products', productRouter);
 
 
 app.listen(PORT, async () => {
